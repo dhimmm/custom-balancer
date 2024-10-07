@@ -1,0 +1,48 @@
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./nginx-geoip2/Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - uk_server
+      - us_server_1
+      - us_server_2
+      - rest_server
+      - backup_server
+
+  uk_server:
+    build: ./servers/uk-server
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "3001:3000"
+
+  us_server_1:
+    build: ./servers/us-server-1
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "3002:3000"
+
+  us_server_2:
+    build: ./servers/us-server-2
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "3003:3000"
+
+  rest_server:
+    build: ./servers/rest-server
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "3004:3000"
+
+  backup_server:
+    build: ./servers/backup-server
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "3005:3000"
